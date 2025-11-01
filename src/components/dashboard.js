@@ -109,7 +109,7 @@ export function AdminDashboard({ user }) {
           </CardHeader>
           <CardContent>
             <Button variant="ghost" asChild className="w-full">
-              <Link href="/dashboard/profile">Ver Usuarios</Link>
+              <Link href="/dashboard/users">Ver Usuarios</Link>
             </Button>
           </CardContent>
         </Card>
