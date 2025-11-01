@@ -91,7 +91,6 @@ export async function GET() {
   }
 }
 
-// Crear un nuevo usuario
 export async function POST(request) {
   try {
     const data = await request.json();
@@ -100,29 +99,70 @@ export async function POST(request) {
       apellido,
       email,
       password,
-      rol_id = 2, // Por defecto, cliente
+      rol_id = 2, // por defecto, cliente
+      tipo_documento,
+      numero_documento,
+      fecha_nacimiento,
+      telefono,
+      calle_numero,
+      ciudad,
+      provincia,
+      codigo_postal,
     } = data;
 
-    if (!nombre || !apellido || !email || !password) {
+    // Validar campos obligatorios
+    if (
+      !nombre ||
+      !apellido ||
+      !email ||
+      !password ||
+      !tipo_documento ||
+      !numero_documento ||
+      !fecha_nacimiento ||
+      !telefono ||
+      !calle_numero ||
+      !ciudad ||
+      !provincia ||
+      !codigo_postal
+    ) {
       return Response.json(
-        { error: "Nombre, apellido, email y contraseña son obligatorios" },
+        { error: "Todos los campos obligatorios deben completarse" },
         { status: 400 },
       );
     }
 
-    // Verificar si ya existe el email
+    // Verificar si ya existe un usuario con ese email
     const existing = await get("SELECT id FROM users WHERE email = ?", [email]);
     if (existing) {
       return Response.json(
-        { error: "El usuario ya existe con ese email" },
+        { error: "Ya existe un usuario con ese email" },
         { status: 400 },
       );
     }
 
+    // Insertar usuario nuevo
     await run(
-      `INSERT INTO users (nombre, apellido, email, password, rol_id)
-       VALUES (?, ?, ?, ?, ?)`,
-      [nombre, apellido, email, password, rol_id],
+      `INSERT INTO users (
+         nombre, apellido, email, password, rol_id,
+         tipo_documento, numero_documento, fecha_nacimiento,
+         telefono, calle_numero, ciudad, provincia, codigo_postal
+       )
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        nombre,
+        apellido,
+        email,
+        password,
+        rol_id,
+        tipo_documento,
+        numero_documento,
+        fecha_nacimiento,
+        telefono,
+        calle_numero,
+        ciudad,
+        provincia,
+        codigo_postal,
+      ],
     );
 
     return Response.json(

@@ -17,14 +17,14 @@ export default function EditUserPage() {
     confirmPassword: "",
     nombre: "",
     apellido: "",
-    tipoDocumento: "DNI",
-    numeroDocumento: "",
-    fechaNacimiento: "",
+    tipo_documento: "DNI",
+    numero_documento: "",
+    fecha_nacimiento: "",
     telefono: "",
-    calle: "",
+    calle_numero: "",
     ciudad: "",
     provincia: "",
-    codigoPostal: "",
+    codigo_postal: "",
     rol_id: 2,
   });
 
@@ -47,14 +47,14 @@ export default function EditUserPage() {
           confirmPassword: "",
           nombre: user.nombre || "",
           apellido: user.apellido || "",
-          tipoDocumento: user.tipo_documento || "DNI",
-          numeroDocumento: user.numero_documento || "",
-          fechaNacimiento: user.fecha_nacimiento || "",
+          tipo_documento: user.tipo_documento || "DNI",
+          numero_documento: user.numero_documento || "",
+          fecha_nacimiento: user.fecha_nacimiento || "",
           telefono: user.telefono || "",
-          calle: user.calle || "",
+          calle_numero: user.calle_numero || "",
           ciudad: user.ciudad || "",
           provincia: user.provincia || "",
-          codigoPostal: user.codigo_postal || "",
+          codigo_postal: user.codigo_postal || "",
           rol_id: user.rol_id || 2,
         });
       } catch (err) {
@@ -86,7 +86,11 @@ export default function EditUserPage() {
       const res = await fetch(`/api/users/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          // Eliminamos confirmPassword antes de enviar
+          confirmPassword: undefined,
+        }),
       });
 
       const data = await res.json();
@@ -204,8 +208,8 @@ export default function EditUserPage() {
                     Tipo de Documento *
                   </label>
                   <select
-                    name="tipoDocumento"
-                    value={form.tipoDocumento}
+                    name="tipo_documento"
+                    value={form.tipo_documento}
                     onChange={handleChange}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 bg-white focus:ring-2 focus:ring-blue-500 outline-none"
                   >
@@ -220,9 +224,9 @@ export default function EditUserPage() {
                     Número de Documento *
                   </label>
                   <input
-                    name="numeroDocumento"
+                    name="numero_documento"
                     required
-                    value={form.numeroDocumento}
+                    value={form.numero_documento}
                     onChange={handleChange}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
                   />
@@ -233,10 +237,10 @@ export default function EditUserPage() {
                     Fecha de Nacimiento *
                   </label>
                   <input
-                    name="fechaNacimiento"
+                    name="fecha_nacimiento"
                     type="date"
                     required
-                    value={form.fechaNacimiento}
+                    value={form.fecha_nacimiento}
                     onChange={handleChange}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
                   />
@@ -267,9 +271,9 @@ export default function EditUserPage() {
                     Calle y Número *
                   </label>
                   <input
-                    name="calle"
+                    name="calle_numero"
                     required
-                    value={form.calle}
+                    value={form.calle_numero}
                     onChange={handleChange}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
                   />
@@ -308,9 +312,9 @@ export default function EditUserPage() {
                     Código Postal *
                   </label>
                   <input
-                    name="codigoPostal"
+                    name="codigo_postal"
                     required
-                    value={form.codigoPostal}
+                    value={form.codigo_postal}
                     onChange={handleChange}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
                   />
@@ -323,7 +327,7 @@ export default function EditUserPage() {
               <h3 className="text-lg font-semibold mb-3">Rol del Usuario</h3>
               <select
                 name="rol_id"
-                value={form.rol_nombre}
+                value={form.rol_id}
                 onChange={handleChange}
                 className="w-full border border-gray-300 rounded-md px-3 py-2 bg-white focus:ring-2 focus:ring-blue-500 outline-none"
               >

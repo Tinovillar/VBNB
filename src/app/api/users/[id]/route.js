@@ -6,12 +6,7 @@ export async function GET(_request, { params }) {
     const { id } = await params; // En Next.js 14/15, params puede ser una Promise
     const user = await get(
       `SELECT
-        users.id,
-        users.nombre,
-        users.apellido,
-        users.email,
-        users.rol_id,
-        users.fecha_registro,
+        users.*,
         roles.nombre AS rol_nombre
       FROM users
       LEFT JOIN roles ON users.rol_id = roles.id
@@ -39,25 +34,74 @@ export async function PUT(req, { params }) {
     const { id } = await params;
     const body = await req.json();
 
-    const { nombre, apellido, email, password, rol_id } = body;
+    const {
+      nombre,
+      apellido,
+      email,
+      password,
+      rol_id,
+      tipo_documento,
+      numero_documento,
+      fecha_nacimiento,
+      telefono,
+      calle_numero,
+      ciudad,
+      provincia,
+      codigo_postal,
+    } = body;
 
-    if (!nombre || !apellido || !email || !rol_id) {
+    // Validación básica
+    if (
+      !nombre ||
+      !apellido ||
+      !email ||
+      !rol_id ||
+      !tipo_documento ||
+      !numero_documento ||
+      !fecha_nacimiento ||
+      !telefono ||
+      !calle_numero ||
+      !ciudad ||
+      !provincia ||
+      !codigo_postal
+    ) {
       return Response.json(
-        { error: "Nombre, apellido, email y rol son obligatorios" },
+        { error: "Todos los campos obligatorios deben completarse" },
         { status: 400 },
       );
     }
 
-    // Verificar que el usuario exista
-    const exists = await get("SELECT id FROM users WHERE id = ?", [id]);
-    if (!exists)
+    // Verificar existencia del usuario
+    const existingUser = await get("SELECT * FROM users WHERE id = ?", [id]);
+    if (!existingUser)
       return Response.json({ error: "Usuario no encontrado" }, { status: 404 });
 
+    // Si no se envía nueva contraseña, se mantiene la actual
+    const finalPassword = password || existingUser.password;
+
+    // Actualizar usuario
     await run(
       `UPDATE users
-       SET nombre = ?, apellido = ?, email = ?, password = ?, rol_id = ?
+       SET nombre = ?, apellido = ?, email = ?, password = ?, rol_id = ?,
+           tipo_documento = ?, numero_documento = ?, fecha_nacimiento = ?,
+           telefono = ?, calle_numero = ?, ciudad = ?, provincia = ?, codigo_postal = ?
        WHERE id = ?`,
-      [nombre, apellido, email, password || exists.password, rol_id, id],
+      [
+        nombre,
+        apellido,
+        email,
+        finalPassword,
+        rol_id,
+        tipo_documento,
+        numero_documento,
+        fecha_nacimiento,
+        telefono,
+        calle_numero,
+        ciudad,
+        provincia,
+        codigo_postal,
+        id,
+      ],
     );
 
     return Response.json({ message: "Usuario actualizado correctamente" });

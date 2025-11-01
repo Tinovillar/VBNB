@@ -27,6 +27,14 @@ CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   nombre TEXT NOT NULL,
   apellido TEXT NOT NULL,
+  tipo_documento TEXT NOT NULL,
+  numero_documento TEXT NOT NULL,
+  fecha_nacimiento DATE NOT NULL,
+  telefono TEXT,
+  calle_numero TEXT NOT NULL,
+  ciudad TEXT NOT NULL,
+  provincia TEXT NOT NULL,
+  codigo_postal TEXT NOT NULL,
   email TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL,
   rol_id INTEGER NOT NULL,
@@ -95,11 +103,25 @@ CREATE TABLE IF NOT EXISTS claims (
 -- ==========================================================
 
 -- Usuarios de ejemplo (asociados por rol_id)
-INSERT INTO users (nombre, apellido, email, password, rol_id)
-VALUES
-  ('Valentino', 'Bianchi', 'admin@vbnb.com', 'admin123', 1),
-  ('Carla', 'Sielina', 'carla@vbnb.com', 'cliente123', 2),
-  ('Lucas', 'Mendez', 'lucas@vbnb.com', 'empleado123', 3);
+INSERT INTO users (
+  nombre, apellido, tipo_documento, numero_documento, fecha_nacimiento, telefono,
+  calle_numero, ciudad, provincia, codigo_postal,
+  email, password, rol_id
+) VALUES
+-- Ejemplo 1
+('Carla', 'Sielina', 'DNI', '40321456', '1998-04-12', '1123456789',
+ 'Av. Corrientes 1543', 'Buenos Aires', 'Buenos Aires', '1043',
+ 'admin@vbnb.com', 'admin123', 1),
+
+-- Ejemplo 2
+('Marcos', 'Ferreyra', 'DNI', '37890231', '1995-11-23', '1136789054',
+ 'San Martín 850', 'Rosario', 'Santa Fe', '2000',
+ 'empleado1@vbnb.com', 'empleado123', 3),
+
+-- Ejemplo 3
+('Lucía', 'Gómez', 'Pasaporte', 'XK239481', '2000-02-05', '1155543210',
+ 'Belgrano 320', 'Córdoba', 'Córdoba', '5000',
+ 'cliente1@vbnb.com', 'cliente123', 2);
 
 -- Pólizas de ejemplo
 INSERT INTO policies (name, description, category, type, coverage, franchise, monthly_price, quarterly_price, annual_price)
