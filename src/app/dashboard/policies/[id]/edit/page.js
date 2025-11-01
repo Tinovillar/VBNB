@@ -44,8 +44,8 @@ export default function EditPolicyPage() {
           categoria: data.policy.category ?? "",
           descripcion: data.policy.description ?? "",
           cobertura: data.policy.coverage ?? "",
-          type: data.type ?? "Básica",
-          franquicia: data.franchise ?? "",
+          type: data.policy.type ?? "Básica",
+          franquicia: data.policy.franchise ?? "",
           precio_mensual: data.policy.monthly_price ?? "",
           precio_anual: data.policy.annual_price ?? "",
         });
