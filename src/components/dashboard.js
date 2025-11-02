@@ -149,7 +149,7 @@ export function ClientDashboard({ user }) {
               <FileText className="h-5 w-5 text-primary" />
               <CardTitle>Pólizas</CardTitle>
             </div>
-            <CardDescription>Administra todas las polizas</CardDescription>
+            <CardDescription>Ver polizas disponibles y activas</CardDescription>
           </CardHeader>
           <CardContent>
             <Button asChild className="w-full bg-transparent" variant="outline">
@@ -165,7 +165,7 @@ export function ClientDashboard({ user }) {
               <FileText className="h-5 w-5 text-primary" />
               <CardTitle>Pagos</CardTitle>
             </div>
-            <CardDescription>Adminstrar Pagos</CardDescription>
+            <CardDescription>Ver Pagos</CardDescription>
           </CardHeader>
           <CardContent>
             <Button
@@ -190,22 +190,6 @@ export function ClientDashboard({ user }) {
           <CardContent>
             <Button asChild className="w-full">
               <Link href="/dashboard/claims">Ver Siniestros</Link>
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* Usuarios */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <User className="h-5 w-5 text-primary" />
-              <CardTitle>Usuarios</CardTitle>
-            </div>
-            <CardDescription>Administrá Usuarios</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button variant="ghost" asChild className="w-full">
-              <Link href="/dashboard/profile">Ver Usuarios</Link>
             </Button>
           </CardContent>
         </Card>

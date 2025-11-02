@@ -13,8 +13,9 @@ import { Button } from "@/components/ui/button";
 import { FileText, PlusCircle, Trash2, Pencil } from "lucide-react";
 import { Header } from "@/components/ui/header";
 
-export default function PoliciesPageClient() {
+export default function PoliciesPageClient({ user }) {
   const [policies, setPolicies] = useState([]);
+  const [myPolicies, setMyPolicies] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -29,6 +30,27 @@ export default function PoliciesPageClient() {
         } else {
           console.error("Error en formato de respuesta", data);
           setPolicies([]);
+        }
+      } catch (error) {
+        console.error("Error al obtener pólizas:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPolicies();
+  }, []);
+
+  useEffect(() => {
+    const fetchPolicies = async () => {
+      try {
+        const res = await fetch("/api/user_policies");
+        const data = await res.json();
+
+        if (res.ok && Array.isArray(data)) {
+          setMyPolicies(data);
+        } else {
+          console.error("Error en formato de respuesta", data);
+          setMyPolicies([]);
         }
       } catch (error) {
         console.error("Error al obtener pólizas:", error);
@@ -69,14 +91,16 @@ export default function PoliciesPageClient() {
             <h1 className="text-3xl font-bold mb-1">Administrar Pólizas</h1>
             <p className="text-gray-600">Gestioná las pólizas disponibles</p>
           </div>
-          <Button
-            className="w-fit"
-            variant="default"
-            onClick={() => router.push("/dashboard/policies/new")}
-          >
-            <PlusCircle className="h-5 w-5 mr-2" />
-            Nueva Póliza
-          </Button>
+          {user.id === 1 && (
+            <Button
+              className="w-fit"
+              variant="default"
+              onClick={() => router.push("/dashboard/policies/new")}
+            >
+              <PlusCircle className="h-5 w-5 mr-2" />
+              Nueva Póliza
+            </Button>
+          )}
         </div>
 
         {policies.length === 0 ? (
@@ -108,29 +132,106 @@ export default function PoliciesPageClient() {
                     {policy.annual_price}
                   </p>
 
-                  <div className="flex justify-between items-center mt-4 gap-2">
-                    <Button
-                      variant=""
-                      className="flex-1 hover:bg-green-200 bg-green-300 text-black"
-                      onClick={() =>
-                        router.push(`/dashboard/policies/${policy.id}/edit`)
-                      }
-                    >
-                      Editar
-                    </Button>
-                    <Button
-                      variant=""
-                      className="flex-1 hover:bg-red-200 bg-red-300 text-black"
-                      onClick={() => handleDelete(policy.id)}
-                    >
-                      Eliminar
-                    </Button>
-                  </div>
+                  {user.id === 1 ? (
+                    <div className="flex justify-between items-center mt-4 gap-2">
+                      <Button
+                        variant=""
+                        className="flex-1 hover:bg-green-200 bg-green-300 text-black"
+                        onClick={() =>
+                          router.push(`/dashboard/policies/${policy.id}/edit`)
+                        }
+                      >
+                        Editar
+                      </Button>
+                      <Button
+                        variant=""
+                        className="flex-1 hover:bg-red-200 bg-red-300 text-black"
+                        onClick={() => handleDelete(policy.id)}
+                      >
+                        Eliminar
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="flex justify-between items-center mt-4 gap-2">
+                      <Button
+                        variant=""
+                        className="flex-1 hover:bg-green-200 bg-green-300 text-black"
+                        onClick={() =>
+                          router.push(`/dashboard/policies/${policy.id}/edit`)
+                        }
+                      >
+                        Contratar
+                      </Button>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}
           </div>
         )}
+        {user.id === 3 && (
+          <>
+            <hr className="my-8 border border-gray-300" />
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h1 className="text-3xl font-bold mb-1">
+                    Pólizas Contratadas
+                  </h1>
+                  <p className="text-gray-600">
+                    Gestioná tus pólizas disponibles
+                  </p>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+        {user.id === 3 &&
+          (myPolicies.length === 0 ? (
+            <p className="text-gray-600">No hay pólizas registradas.</p>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {myPolicies.map((policy) => (
+                <Card key={policy.id}>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <FileText className="h-5 w-5 text-primary" />
+                        <CardTitle>{policy.name}</CardTitle>
+                      </div>
+                    </div>
+                    <CardDescription>{policy.category}</CardDescription>
+                  </CardHeader>
+
+                  <CardContent>
+                    <p className="text-sm text-gray-600 mb-2">
+                      {policy.description || "Sin descripción."}
+                    </p>
+                    <p className="text-sm">
+                      <span className="font-semibold">Mensual:</span> $
+                      {policy.monthly_price}
+                    </p>
+                    <p className="text-sm">
+                      <span className="font-semibold">Anual:</span> $
+                      {policy.annual_price}
+                    </p>
+
+                    <div className="flex justify-between items-center mt-4 gap-2">
+                      <Button
+                        variant=""
+                        className="flex-1 hover:bg-orange-300 bg-orange-400 text-black"
+                        onClick={() =>
+                          router.push(`/dashboard/policies/${policy.id}/edit`)
+                        }
+                      >
+                        Ver Pagos
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ))}
       </div>
     </>
   );

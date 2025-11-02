@@ -7,5 +7,5 @@ export default async function PoliciesPage() {
   if (!user) {
     redirect("/auth/login");
   }
-  return <PoliciesPageClient />;
+  return <PoliciesPageClient user={user} />;
 }
