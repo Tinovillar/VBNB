@@ -76,6 +76,7 @@ export function AdminDashboard({ user }) {
               disabled
               className="w-full bg-transparent"
               variant="outline"
+              onClick={() => router.push(`/dashboard/payments`)}
             >
               Ver Pagos
             </Button>
@@ -92,8 +93,12 @@ export function AdminDashboard({ user }) {
             <CardDescription>Administra Sinisetros</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button asChild className="w-full">
-              <Link href="/dashboard/claims">Ver Siniestros</Link>
+            <Button
+              asChild
+              className="w-full"
+              onClick={() => router.push(`/dashboard/claims`)}
+            >
+              Ver Siniestros
             </Button>
           </CardContent>
         </Card>
@@ -108,8 +113,13 @@ export function AdminDashboard({ user }) {
             <CardDescription>Administrá Usuarios</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="ghost" asChild className="w-full">
-              <Link href="/dashboard/users">Ver Usuarios</Link>
+            <Button
+              variant="ghost"
+              asChild
+              className="w-full"
+              onClick={() => router.push(`/dashboard/users`)}
+            >
+              Ver Usuarios
             </Button>
           </CardContent>
         </Card>
@@ -119,6 +129,7 @@ export function AdminDashboard({ user }) {
 }
 
 export function ClientDashboard({ user }) {
+  const router = useRouter();
   return (
     <>
       <h1 className="text-3xl font-bold mb-1">
@@ -136,8 +147,12 @@ export function ClientDashboard({ user }) {
             <CardDescription>Administrá tus datos personales</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button asChild className="w-full">
-              <Link href="/dashboard/profile">Ver Perfil</Link>
+            <Button
+              asChild
+              className="w-full"
+              onClick={() => router.push(`/dashboard/profile`)}
+            >
+              Ver Perfil
             </Button>
           </CardContent>
         </Card>
@@ -152,8 +167,13 @@ export function ClientDashboard({ user }) {
             <CardDescription>Ver polizas disponibles y activas</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button asChild className="w-full bg-transparent" variant="outline">
-              <Link href="/dashboard/policies">Ver Pólizas</Link>
+            <Button
+              asChild
+              className="w-full bg-transparent"
+              variant="outline"
+              onClick={() => router.push(`/dashboard/policies`)}
+            >
+              Ver Pólizas
             </Button>
           </CardContent>
         </Card>
@@ -169,9 +189,9 @@ export function ClientDashboard({ user }) {
           </CardHeader>
           <CardContent>
             <Button
-              disabled
               className="w-full bg-transparent"
               variant="outline"
+              onClick={() => router.push(`/dashboard/payments`)}
             >
               Ver Pagos
             </Button>
@@ -188,8 +208,12 @@ export function ClientDashboard({ user }) {
             <CardDescription>Administra Sinisetros</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button asChild className="w-full">
-              <Link href="/dashboard/claims">Ver Siniestros</Link>
+            <Button
+              asChild
+              className="w-full"
+              onClick={() => router.push(`/dashboard/claims`)}
+            >
+              Ver Siniestros
             </Button>
           </CardContent>
         </Card>
@@ -198,6 +222,7 @@ export function ClientDashboard({ user }) {
   );
 }
 export function EmployeeDashboard({ user }) {
+  const router = useRouter();
   return (
     <>
       <h1 className="text-3xl font-bold mb-1">
@@ -215,8 +240,12 @@ export function EmployeeDashboard({ user }) {
             <CardDescription>Administrá tus datos personales</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button asChild className="w-full">
-              <Link href="/dashboard/profile">Ver Perfil</Link>
+            <Button
+              asChild
+              className="w-full"
+              onClick={() => router.push(`/dashboard/profile`)}
+            >
+              Ver Perfil
             </Button>
           </CardContent>
         </Card>
@@ -231,8 +260,13 @@ export function EmployeeDashboard({ user }) {
             <CardDescription>Administra todas las polizas</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button asChild className="w-full bg-transparent" variant="outline">
-              <Link href="/dashboard/policies">Ver Pólizas</Link>
+            <Button
+              asChild
+              className="w-full bg-transparent"
+              variant="outline"
+              onClick={() => router.push(`/dashboard/policies`)}
+            >
+              Ver Pólizas
             </Button>
           </CardContent>
         </Card>
@@ -248,9 +282,9 @@ export function EmployeeDashboard({ user }) {
           </CardHeader>
           <CardContent>
             <Button
-              disabled
               className="w-full bg-transparent"
               variant="outline"
+              onClick={() => router.push(`/dashboard/payments`)}
             >
               Ver Pagos
             </Button>
@@ -267,8 +301,12 @@ export function EmployeeDashboard({ user }) {
             <CardDescription>Administra Sinisetros</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button asChild className="w-full">
-              <Link href="/dashboard/claims">Ver Siniestros</Link>
+            <Button
+              asChild
+              className="w-full"
+              onClick={() => router.push(`/dashboard/claims`)}
+            >
+              Ver Siniestros
             </Button>
           </CardContent>
         </Card>
@@ -283,8 +321,13 @@ export function EmployeeDashboard({ user }) {
             <CardDescription>Administrá Usuarios</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="ghost" asChild className="w-full">
-              <Link href="/dashboard/profile">Ver Usuarios</Link>
+            <Button
+              variant="ghost"
+              asChild
+              className="w-full"
+              onClick={() => router.push(`/dashboard/users`)}
+            >
+              Ver Usuarios
             </Button>
           </CardContent>
         </Card>

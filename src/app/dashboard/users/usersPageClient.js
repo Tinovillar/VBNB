@@ -7,7 +7,7 @@ import { Header } from "@/components/ui/header";
 import { PlusCircle, Trash2, Edit2 } from "lucide-react";
 import { getUser } from "@/lib/session";
 
-export default function UsersPageClient() {
+export default function UsersPageClient({ user }) {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();

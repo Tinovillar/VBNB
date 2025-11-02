@@ -75,7 +75,7 @@ export async function GET() {
           users.fecha_registro
         FROM users
         LEFT JOIN roles ON users.rol_id = roles.id
-        WHERE users.rol_id = 3 AND users.id != ?
+        WHERE users.rol_id = 2 AND users.id != ?
       `,
         [userId],
       );
