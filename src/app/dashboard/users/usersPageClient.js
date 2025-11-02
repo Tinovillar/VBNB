@@ -18,8 +18,6 @@ export default function UsersPageClient() {
         const res = await fetch("/api/users");
         const data = await res.json();
 
-        console.log(data);
-
         if (res.ok && Array.isArray(data)) {
           setUsers(data);
         } else {

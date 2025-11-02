@@ -38,7 +38,6 @@ export default function EditPolicyPage() {
           router.push("/dashboard/policies");
           return;
         }
-        console.log(data);
         setForm({
           nombre: data.policy.name ?? "",
           categoria: data.policy.category ?? "",
