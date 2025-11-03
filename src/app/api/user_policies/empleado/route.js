@@ -5,6 +5,7 @@ export async function GET() {
   try {
     const result = await query(`
       SELECT
+        up.id AS up_id,
         u.id AS user_id,
         u.nombre,
         u.apellido,

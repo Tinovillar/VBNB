@@ -10,7 +10,19 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText, PlusCircle, Eye } from "lucide-react";
+import {
+  FileText,
+  PlusCircle,
+  Eye,
+  Pencil,
+  Trash2,
+  Cross,
+  CrossIcon,
+  Crosshair,
+  Croissant,
+  X,
+  Check,
+} from "lucide-react";
 import { Header } from "@/components/ui/header";
 
 export default function PoliciesPageClient({ user }) {
@@ -83,6 +95,61 @@ export default function PoliciesPageClient({ user }) {
     };
     fetchPolicies();
   }, []);
+
+  const handleUpdatePoliza = async (userPolicyId, status) => {
+    if (!confirm("¿Deseás activar esta póliza?")) return;
+
+    try {
+      const res = await fetch("/api/user_policies", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: userPolicyId,
+          status: status,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.error || "No se pudo actualizar el estado");
+        return;
+      }
+
+      alert(data.message || "Póliza" + status + "correctamente");
+      window.location.reload(); // o router.refresh() si estás usando App Router
+    } catch (err) {
+      console.error("Error al actualizar la póliza:", err);
+      alert("Error de conexión con el servidor");
+    }
+  };
+
+  const handleContratarPoliza = async (policyId) => {
+    if (!confirm("¿Deseás contratar esta póliza?")) return;
+
+    try {
+      const res = await fetch("/api/user_policies", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          policy_id: policyId,
+          payment_frequency: "mensual", // o podrías pedirlo en un select
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.error || "No se pudo contratar la póliza");
+        return;
+      }
+
+      window.location.reload();
+    } catch (err) {
+      console.error("Error al contratar la póliza:", err);
+      alert("Error de conexión con el servidor");
+    }
+  };
 
   const handleDelete = async (id) => {
     if (!confirm("¿Seguro que querés eliminar esta póliza?")) return;
@@ -179,9 +246,7 @@ export default function PoliciesPageClient({ user }) {
                       <Button
                         variant=""
                         className="flex-1 hover:bg-green-200 bg-green-300 text-black"
-                        onClick={() =>
-                          router.push(`/dashboard/policies/${policy.id}/edit`)
-                        }
+                        onClick={() => handleContratarPoliza(policy.id)}
                       >
                         Contratar
                       </Button>
@@ -215,7 +280,7 @@ export default function PoliciesPageClient({ user }) {
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {myPolicies.map((policy) => (
-                <Card key={policy.id}>
+                <Card key={myPolicies.indexOf(policy)}>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -226,8 +291,8 @@ export default function PoliciesPageClient({ user }) {
                             policy.status === "activa"
                               ? "text-green-400 font-bold"
                               : policy.status === "cancelada"
-                                ? "text-red-400 font-bold"
-                                : "text-orange-400 font-bold"
+                                ? "text-red-500 font-bold"
+                                : "text-orange-300 font-bold"
                           }
                         >
                           {policy.status.toUpperCase()}
@@ -253,7 +318,7 @@ export default function PoliciesPageClient({ user }) {
                     <div className="flex justify-between items-center mt-4 gap-2">
                       <Button
                         variant=""
-                        className="flex-1 hover:bg-orange-300 bg-orange-400 text-black"
+                        className="flex-1 hover:bg-blue-300 bg-blue-400 text-black"
                         onClick={() =>
                           router.push(`/dashboard/policies/${policy.id}`)
                         }
@@ -321,11 +386,8 @@ export default function PoliciesPageClient({ user }) {
 
                   <tbody className="divide-y divide-gray-100">
                     {data.map((row) => (
-                      <tr
-                        key={`${row.user_id}-${row.policy_id}`}
-                        className="hover:bg-gray-50"
-                      >
-                        <td className="px-6 py-3 text-gray-700">
+                      <tr key={data.indexOf(row)} className="hover:bg-gray-50">
+                        <td className={"px-6 py-3 text-gray-700 font-bold"}>
                           {row.status.toUpperCase()}
                         </td>
                         <td className="px-6 py-3">
@@ -355,6 +417,24 @@ export default function PoliciesPageClient({ user }) {
                             }
                           >
                             <Eye className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            className="flex items-center gap-1 text-blue-600 hover:text-blue-800"
+                            onClick={() =>
+                              handleUpdatePoliza(row.up_id, "activa")
+                            }
+                          >
+                            <Check className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            className="flex items-center gap-1 text-blue-600 hover:text-blue-800"
+                            onClick={() =>
+                              handleUpdatePoliza(row.up_id, "cancelada")
+                            }
+                          >
+                            <X className="h-4 w-4" />
                           </Button>
                         </td>
                       </tr>
