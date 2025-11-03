@@ -1,5 +1,5 @@
-import { query, run } from "@/lib/db";
-import { getSession } from "@/lib/session";
+import { query, run, get } from "@/lib/db";
+import { getSession, getUser } from "@/lib/session";
 
 // Obtener todos los siniestros del usuario autenticado
 export async function GET() {
@@ -76,6 +76,65 @@ export async function POST(request) {
     );
   } catch (err) {
     console.error("Error al reportar siniestro:", err);
+    return Response.json(
+      { error: "Error interno del servidor" },
+      { status: 500 },
+    );
+  }
+}
+
+export async function PUT(request) {
+  try {
+    const user = await getUser();
+
+    // 1. Validar sesión
+    if (!user) {
+      return Response.json({ error: "No autorizado" }, { status: 401 });
+    }
+
+    // 2. Verificar que tenga rol de empleado o administrador
+    if (![1, 3].includes(user.rol_id)) {
+      return Response.json(
+        { error: "Permisos insuficientes" },
+        { status: 403 },
+      );
+    }
+
+    // 3. Obtener datos del body
+    const { id, status } = await request.json();
+
+    if (!id || !status) {
+      return Response.json(
+        { error: "ID y estado son obligatorios" },
+        { status: 400 },
+      );
+    }
+
+    console.log(id, status);
+
+    // 4. Validar que el nuevo estado sea válido
+    const estadosValidos = ["reportado", "en revisión", "cerrado"];
+    if (!estadosValidos.includes(status)) {
+      return Response.json({ error: "Estado inválido" }, { status: 400 });
+    }
+
+    // 5. Verificar que el siniestro exista
+    const existing = await get("SELECT * FROM claims WHERE id = ?", [id]);
+    if (!existing) {
+      return Response.json(
+        { error: "Siniestro no encontrado" },
+        { status: 404 },
+      );
+    }
+
+    // 6. Actualizar estado
+    await run("UPDATE claims SET status = ? WHERE id = ?", [status, id]);
+
+    return Response.json({
+      message: `Estado del siniestro actualizado a '${status}' correctamente`,
+    });
+  } catch (err) {
+    console.error("Error al actualizar estado del siniestro:", err);
     return Response.json(
       { error: "Error interno del servidor" },
       { status: 500 },

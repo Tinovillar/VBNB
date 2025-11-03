@@ -104,8 +104,8 @@ export default function NewClaimPage() {
               >
                 <option value="">-- Seleccioná tu póliza --</option>
                 {policies.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.policy_nombre || p.nombre} — {p.policy_type || p.type}
+                  <option key={policies.indexOf(p)} value={p.id}>
+                    {p.name || p.nombre} — {p.policy_type || p.type}
                   </option>
                 ))}
               </select>

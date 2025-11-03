@@ -15,7 +15,7 @@ export default function SiniestrosPageClient({ user }) {
     const fetchClaims = async () => {
       try {
         let res;
-        if (user.id === 2) {
+        if (user.rol_id === 2) {
           res = await fetch("/api/claims");
         } else {
           res = await fetch("/api/claims/all");
@@ -66,7 +66,7 @@ export default function SiniestrosPageClient({ user }) {
       <div className="p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            {user.id === 2 ? (
+            {user.rol_id === 2 ? (
               <h1 className="text-3xl font-bold mb-1">Mis Siniestros</h1>
             ) : (
               <h1 className="text-3xl font-bold mb-1">Todos los Siniestros</h1>
@@ -75,7 +75,7 @@ export default function SiniestrosPageClient({ user }) {
               Reportá y gestioná tus siniestros registrados
             </p>
           </div>
-          {user.id === 2 && (
+          {user.rol_id === 2 && (
             <Button
               className="w-fit"
               variant="default"
@@ -130,9 +130,9 @@ export default function SiniestrosPageClient({ user }) {
                     </td>
                     <td
                       className={`px-6 py-3 font-medium ${
-                        claim.status === "Pendiente"
+                        claim.status === "en revisión"
                           ? "text-yellow-600"
-                          : claim.status === "Aprobado"
+                          : claim.status === "cerrado"
                             ? "text-green-600"
                             : "text-red-600"
                       }`}

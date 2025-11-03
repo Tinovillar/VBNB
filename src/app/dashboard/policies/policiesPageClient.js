@@ -287,13 +287,13 @@ export default function PoliciesPageClient({ user }) {
                         <FileText className="h-5 w-5 text-primary" />
                         <CardTitle>{policy.name}</CardTitle>
                         <CardDescription
-                          className={
+                          className={`font-bold ${
                             policy.status === "activa"
-                              ? "text-green-400 font-bold"
+                              ? "text-green-400"
                               : policy.status === "cancelada"
-                                ? "text-red-500 font-bold"
-                                : "text-orange-300 font-bold"
-                          }
+                                ? "text-red-500"
+                                : "text-orange-300"
+                          }`}
                         >
                           {policy.status.toUpperCase()}
                         </CardDescription>
@@ -387,7 +387,15 @@ export default function PoliciesPageClient({ user }) {
                   <tbody className="divide-y divide-gray-100">
                     {data.map((row) => (
                       <tr key={data.indexOf(row)} className="hover:bg-gray-50">
-                        <td className={"px-6 py-3 text-gray-700 font-bold"}>
+                        <td
+                          className={`px-6 py-3 text-gray-700 font-bold ${
+                            row.status === "activa"
+                              ? "text-green-400"
+                              : row.status === "cancelada"
+                                ? "text-red-500"
+                                : "text-orange-400"
+                          }`}
+                        >
                           {row.status.toUpperCase()}
                         </td>
                         <td className="px-6 py-3">
