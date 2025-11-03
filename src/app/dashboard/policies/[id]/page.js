@@ -15,7 +15,7 @@ export default function PolicyDetailPage() {
   useEffect(() => {
     const loadPolicy = async () => {
       try {
-        const res = await fetch(`/api/policies/${id}`);
+        const res = await fetch(`/api/user_policies/${id}`);
         const data = await res.json();
 
         if (!res.ok) {
@@ -23,7 +23,8 @@ export default function PolicyDetailPage() {
           router.push("/dashboard/policies");
           return;
         }
-        setPolicy(data.policy);
+        setPolicy(data[0]);
+        console.log(data);
       } catch (err) {
         console.error("Error cargando póliza:", err);
         alert("Error de conexión con el servidor");
@@ -50,7 +51,6 @@ export default function PolicyDetailPage() {
       </div>
     );
   }
-
   return (
     <div className="flex flex-col min-h-screen">
       <Header hasLogin={false} logged={true} />
@@ -104,14 +104,16 @@ export default function PolicyDetailPage() {
             >
               Volver
             </Button>
-            <Button
-              onClick={() =>
-                router.push("/dashboard/payments/new?up_id=" + policy.id)
-              }
-              className="bg-black text-white hover:bg-gray-100"
-            >
-              Generar pago
-            </Button>
+            {policy.status === "activa" && (
+              <Button
+                onClick={() =>
+                  router.push("/dashboard/payments/new?up_id=" + policy.up_id)
+                }
+                className="bg-black text-white hover:bg-gray-100"
+              >
+                Generar pago
+              </Button>
+            )}
           </div>
         </div>
       </div>

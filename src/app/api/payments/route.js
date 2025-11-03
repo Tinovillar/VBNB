@@ -1,6 +1,7 @@
 import { get, run, query } from "@/lib/db";
 import { getUser } from "@/lib/session";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
+import QRCode from "qrcode";
 
 export async function GET() {
   try {
@@ -91,7 +92,7 @@ export async function POST(request) {
 
     // Crear PDF
     const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([600, 400]);
+    const page = pdfDoc.addPage([600, 500]);
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const { width, height } = page.getSize();
 
@@ -121,6 +122,36 @@ export async function POST(request) {
         font,
       });
     });
+
+    // ✅ Si el método de pago es QR, generar y dibujar el código en el PDF
+    if (metodo_pago.toLowerCase() === "qr") {
+      // Convertir el contenido a base64 (puede ser datos del método de pago, URL, etc.)
+      const qrDataURL = await QRCode.toDataURL(
+        `Pago ID: ${pagoId}\nMonto: $${monto}\nUsuario: ${policy.usuario}\nPóliza: ${policy.name}`,
+        { margin: 1, width: 200 },
+      );
+
+      // Insertar imagen del QR
+      const qrImageBytes = Uint8Array.from(atob(qrDataURL.split(",")[1]), (c) =>
+        c.charCodeAt(0),
+      );
+      const qrImage = await pdfDoc.embedPng(qrImageBytes);
+      const qrDims = qrImage.scale(0.5);
+
+      page.drawImage(qrImage, {
+        x: width - 250,
+        y: height - 300,
+        width: qrDims.width,
+        height: qrDims.height,
+      });
+
+      page.drawText("Escaneá este QR para realizar el pago", {
+        x: width - 250,
+        y: height - 310,
+        size: 10,
+        font,
+      });
+    }
 
     const pdfBytes = await pdfDoc.save();
 

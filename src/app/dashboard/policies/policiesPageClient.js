@@ -39,7 +39,6 @@ export default function PoliciesPageClient({ user }) {
         const result = await res.json();
 
         if (res.ok && Array.isArray(result)) {
-          console.log(result);
           setData(result);
         } else {
           console.error("Error en formato de respuesta", result);
@@ -82,6 +81,7 @@ export default function PoliciesPageClient({ user }) {
         const data = await res.json();
 
         if (res.ok && Array.isArray(data)) {
+          console.log(data);
           setMyPolicies(data);
         } else {
           console.error("Error en formato de respuesta", data);
@@ -279,8 +279,8 @@ export default function PoliciesPageClient({ user }) {
             <p className="text-gray-600">No hay pólizas registradas.</p>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {myPolicies.map((policy) => (
-                <Card key={myPolicies.indexOf(policy)}>
+              {myPolicies.map((policy, i) => (
+                <Card key={policy.up_id}>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -320,7 +320,7 @@ export default function PoliciesPageClient({ user }) {
                         variant=""
                         className="flex-1 hover:bg-blue-300 bg-blue-400 text-black"
                         onClick={() =>
-                          router.push(`/dashboard/policies/${policy.id}`)
+                          router.push(`/dashboard/policies/${policy.up_id}`)
                         }
                       >
                         Ver Póliza

@@ -16,24 +16,29 @@ export default function NewPaymentPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const presetPolicyId = searchParams.get("up_id");
+  console.log(presetPolicyId);
 
   // Traer pólizas contratadas del usuario
   useEffect(() => {
     const fetchUserPolicies = async () => {
       try {
-        const res = await fetch("/api/user_policies");
+        const res = await fetch(`/api/user_policies/${presetPolicyId}`);
         const data = await res.json();
         if (res.ok) {
           setUserPolicies(data);
           // Si viene preseleccionada, setear el formulario
-          if (presetPolicyId) {
-            const match = data.find((p) => p.id === Number(presetPolicyId));
-            if (match)
-              setForm((prev) => ({
-                ...prev,
-                up_id: presetPolicyId,
-              }));
-          }
+          // if (presetPolicyId) {
+          //   const match = data.find((p) => p.id === Number(presetPolicyId));
+          //   if (match)
+          //     setForm((prev) => ({
+          //       ...prev,
+          //       up_id: presetPolicyId,
+          //     }));
+          // }
+          setForm((prev) => ({
+            ...prev,
+            up_id: presetPolicyId,
+          }));
         }
       } catch (err) {
         console.error("Error al obtener pólizas:", err);
@@ -49,6 +54,8 @@ export default function NewPaymentPage() {
 
   const handleGeneratePayment = async (e) => {
     e.preventDefault();
+
+    console.log(form);
 
     if (!form.up_id) {
       alert("Debe seleccionar una póliza");
@@ -144,7 +151,7 @@ export default function NewPaymentPage() {
                 className="w-full border border-gray-300 rounded-md px-3 py-2 bg-white focus:ring-2 focus:ring-blue-500 outline-none"
               >
                 <option value="tarjeta">Tarjeta</option>
-                <option value="transferencia">Transferencia</option>
+                <option value="QR">QR</option>
                 <option value="efectivo">Efectivo</option>
               </select>
             </div>

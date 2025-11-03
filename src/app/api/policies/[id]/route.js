@@ -1,11 +1,12 @@
 import { get, run } from "@/lib/db";
+import { getUser } from "@/lib/session";
 
 export async function GET(_request, { params }) {
   try {
     const { id } = await params; // en Next 14/15 params puede ser Promise
     //const policy = await get("SELECT * FROM policies WHERE id = ?", [id]);
     const policy = await get(
-      "select * from user_policies LEFT JOIN policies WHERE user_policies.policy_id=?",
+      "select up.id AS up_id, * from user_policies up LEFT JOIN policies p WHERE up.policy_id=p.id AND p.id=?",
       [id],
     );
 
