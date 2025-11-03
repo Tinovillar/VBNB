@@ -4,9 +4,7 @@ import { getSession } from "@/lib/session";
 export async function GET(req, { params }) {
   try {
     const userId = await getSession();
-    if (!userId) {
-      return Response.json({ error: "No autorizado" }, { status: 401 });
-    }
+    console.log(await params);
 
     const { id } = await params;
 
@@ -19,8 +17,8 @@ export async function GET(req, { params }) {
        FROM claims c
        JOIN user_policies up ON c.user_policy_id = up.id
        JOIN policies p ON up.policy_id = p.id
-       WHERE c.id = ? AND up.user_id = ?`,
-      [id, userId],
+       WHERE c.id = ?`,
+      [id],
     );
 
     if (!claim)

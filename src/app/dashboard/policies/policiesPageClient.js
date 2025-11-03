@@ -10,14 +10,37 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText, PlusCircle, Trash2, Pencil } from "lucide-react";
+import { FileText, PlusCircle, Eye } from "lucide-react";
 import { Header } from "@/components/ui/header";
 
 export default function PoliciesPageClient({ user }) {
+  const [data, setData] = useState([]);
   const [policies, setPolicies] = useState([]);
   const [myPolicies, setMyPolicies] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchUserPolicies = async () => {
+      try {
+        const res = await fetch("/api/user_policies/empleado");
+        const result = await res.json();
+
+        if (res.ok && Array.isArray(result)) {
+          console.log(result);
+          setData(result);
+        } else {
+          console.error("Error en formato de respuesta", result);
+          setData([]);
+        }
+      } catch (error) {
+        console.error("Error al obtener usuarios y pólizas:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUserPolicies();
+  }, []);
 
   useEffect(() => {
     const fetchPolicies = async () => {
@@ -132,7 +155,7 @@ export default function PoliciesPageClient({ user }) {
                     {policy.annual_price}
                   </p>
 
-                  {user.id === 1 ? (
+                  {user.id !== 3 ? (
                     <div className="flex justify-between items-center mt-4 gap-2">
                       <Button
                         variant=""
@@ -242,6 +265,104 @@ export default function PoliciesPageClient({ user }) {
                 </Card>
               ))}
             </div>
+          ))}
+        {user.id === 2 && (
+          <>
+            <hr className="my-10 border border-gray-300" />
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h1 className="text-3xl font-bold mb-1">
+                    Pólizas de Clientes
+                  </h1>
+                  <p className="text-gray-600">Gestioná sus pólizas</p>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+        {user.id === 2 &&
+          (data.length === 0 ? (
+            <>
+              <p className="text-gray-600">No hay pólizas contratadas.</p>
+            </>
+          ) : (
+            <>
+              <div className="overflow-x-auto bg-white rounded-xl border border-gray-200 shadow-sm mb-10">
+                <table className="min-w-full divide-y divide-gray-200 text-sm">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left font-semibold text-gray-700">
+                        Estado
+                      </th>
+                      <th className="px-6 py-3 text-left font-semibold text-gray-700">
+                        Nombre
+                      </th>
+                      <th className="px-6 py-3 text-left font-semibold text-gray-700">
+                        Email
+                      </th>
+                      <th className="px-6 py-3 text-left font-semibold text-gray-700">
+                        Póliza
+                      </th>
+                      <th className="px-6 py-3 text-left font-semibold text-gray-700">
+                        Tipo
+                      </th>
+                      <th className="px-6 py-3 text-left font-semibold text-gray-700">
+                        Cobertura
+                      </th>
+                      <th className="px-6 py-3 text-left font-semibold text-gray-700">
+                        Precio Mensual
+                      </th>
+                      <th className="px-6 py-3 text-right font-semibold text-gray-700">
+                        Acciones
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody className="divide-y divide-gray-100">
+                    {data.map((row) => (
+                      <tr
+                        key={`${row.user_id}-${row.policy_id}`}
+                        className="hover:bg-gray-50"
+                      >
+                        <td className="px-6 py-3 text-gray-700">
+                          {row.status.toUpperCase()}
+                        </td>
+                        <td className="px-6 py-3">
+                          {row.nombre} {row.apellido}
+                        </td>
+                        <td className="px-6 py-3 text-gray-600">{row.email}</td>
+                        <td className="px-6 py-3 text-gray-700">
+                          {row.policy_nombre}
+                        </td>
+                        <td className="px-6 py-3 text-gray-600">
+                          {row.policy_type || "Básica"}
+                        </td>
+                        <td className="px-6 py-3 text-gray-600">
+                          {row.policy_cobertura || "—"}
+                        </td>
+                        <td className="px-6 py-3 text-gray-600">
+                          ${row.policy_precio_mensual}
+                        </td>
+                        <td className="px-6 py-3 text-right">
+                          <Button
+                            variant="ghost"
+                            className="flex items-center gap-1 text-blue-600 hover:text-blue-800"
+                            onClick={() =>
+                              router.push(
+                                `/dashboard/policies/${row.policy_id}`,
+                              )
+                            }
+                          >
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
           ))}
       </div>
     </>
