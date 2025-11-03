@@ -181,7 +181,7 @@ export default function PoliciesPageClient({ user }) {
             <h1 className="text-3xl font-bold mb-1">Administrar Pólizas</h1>
             <p className="text-gray-600">Gestioná las pólizas disponibles</p>
           </div>
-          {user.id === 1 && (
+          {user.rol_id !== 2 && (
             <Button
               className="w-fit"
               variant="default"
@@ -222,7 +222,7 @@ export default function PoliciesPageClient({ user }) {
                     {policy.annual_price}
                   </p>
 
-                  {user.id !== 3 ? (
+                  {user.rol_id !== 2 ? (
                     <div className="flex justify-between items-center mt-4 gap-2">
                       <Button
                         variant=""
@@ -257,7 +257,7 @@ export default function PoliciesPageClient({ user }) {
             ))}
           </div>
         )}
-        {user.id === 3 && (
+        {user.rol_id === 2 && (
           <>
             <hr className="my-8 border border-gray-300" />
             <div className="p-6">
@@ -274,7 +274,7 @@ export default function PoliciesPageClient({ user }) {
             </div>
           </>
         )}
-        {user.id === 3 &&
+        {user.rol_id === 2 &&
           (myPolicies.length === 0 ? (
             <p className="text-gray-600">No hay pólizas registradas.</p>
           ) : (
@@ -331,7 +331,7 @@ export default function PoliciesPageClient({ user }) {
               ))}
             </div>
           ))}
-        {user.id === 2 && (
+        {user.rol_id !== 2 && (
           <>
             <hr className="my-10 border border-gray-300" />
             <div className="p-6">
@@ -346,7 +346,7 @@ export default function PoliciesPageClient({ user }) {
             </div>
           </>
         )}
-        {user.id === 2 &&
+        {user.rol_id !== 2 &&
           (data.length === 0 ? (
             <>
               <p className="text-gray-600">No hay pólizas contratadas.</p>

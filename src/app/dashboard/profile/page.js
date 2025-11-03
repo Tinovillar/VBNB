@@ -95,6 +95,7 @@ export default function ProfilePage() {
       }
 
       alert("Perfil actualizado correctamente");
+      router.push("/dashboard");
     } catch (err) {
       console.error(err);
       alert("Error de conexión con el servidor");

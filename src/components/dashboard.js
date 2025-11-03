@@ -73,7 +73,6 @@ export function AdminDashboard({ user }) {
           </CardHeader>
           <CardContent>
             <Button
-              disabled
               className="w-full bg-transparent"
               variant="outline"
               onClick={() => router.push(`/dashboard/payments`)}

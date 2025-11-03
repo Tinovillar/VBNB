@@ -38,10 +38,25 @@ export default function SignUpPage() {
     }
 
     try {
+      const body = {
+        nombre: formData.nombre,
+        apellido: formData.apellido,
+        email: formData.email,
+        password: formData.password,
+        tipo_documento: formData.tipoDocumento,
+        numero_documento: formData.numeroDocumento,
+        fecha_nacimiento: formData.fechaNacimiento,
+        telefono: formData.telefono,
+        calle_numero: formData.calle,
+        ciudad: formData.ciudad,
+        provincia: formData.provincia,
+        codigo_postal: formData.codigoPostal,
+      };
+
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(body),
       });
 
       const data = await res.json();
@@ -49,6 +64,7 @@ export default function SignUpPage() {
       if (!res.ok) {
         alert(data.error || "Error al registrarse");
       } else {
+        alert("Usuario registrado con éxito");
         router.push("/dashboard");
       }
     } catch (error) {

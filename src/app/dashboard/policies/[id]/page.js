@@ -11,7 +11,6 @@ export default function PolicyDetailPage() {
 
   const [policy, setPolicy] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isPaying, setIsPaying] = useState(false);
 
   useEffect(() => {
     const loadPolicy = async () => {
@@ -35,37 +34,6 @@ export default function PolicyDetailPage() {
 
     loadPolicy();
   }, [id, router]);
-
-  const handlePayment = async () => {
-    try {
-      setIsPaying(true);
-
-      const res = await fetch(`/api/payments`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          policy_id: id,
-          amount: policy.precio_mensual,
-          description: `Pago mensual de la póliza ${policy.nombre}`,
-        }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        alert(data.error || "No se pudo generar el pago");
-        return;
-      }
-
-      alert("Pago registrado correctamente");
-      // En el caso de integración con pasarela, aquí redirigirías al link de pago
-      // window.location.href = data.payment_url;
-    } catch (err) {
-      console.error("Error al generar pago:", err);
-      alert("Error de conexión con el servidor");
-    } finally {
-      setIsPaying(false);
-    }
-  };
 
   if (loading) {
     return (
@@ -137,11 +105,12 @@ export default function PolicyDetailPage() {
               Volver
             </Button>
             <Button
-              onClick={handlePayment}
-              disabled={isPaying}
+              onClick={() =>
+                router.push("/dashboard/payments/new?up_id=" + policy.id)
+              }
               className="bg-black text-white hover:bg-gray-100"
             >
-              {isPaying ? "Procesando..." : "Generar pago"}
+              Generar pago
             </Button>
           </div>
         </div>
