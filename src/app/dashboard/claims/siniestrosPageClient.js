@@ -66,7 +66,11 @@ export default function SiniestrosPageClient({ user }) {
       <div className="p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-3xl font-bold mb-1">Mis Siniestros</h1>
+            {user.id === 2 ? (
+              <h1 className="text-3xl font-bold mb-1">Mis Siniestros</h1>
+            ) : (
+              <h1 className="text-3xl font-bold mb-1">Todos los Siniestros</h1>
+            )}
             <p className="text-gray-600">
               Reportá y gestioná tus siniestros registrados
             </p>
