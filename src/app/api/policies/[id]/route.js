@@ -1,10 +1,13 @@
 import { get, run } from "@/lib/db";
-import { NextResponse } from "next/server";
 
 export async function GET(_request, { params }) {
   try {
     const { id } = await params; // en Next 14/15 params puede ser Promise
-    const policy = await get("SELECT * FROM policies WHERE id = ?", [id]);
+    //const policy = await get("SELECT * FROM policies WHERE id = ?", [id]);
+    const policy = await get(
+      "select * from user_policies LEFT JOIN policies WHERE user_policies.policy_id=?",
+      [id],
+    );
 
     if (!policy) {
       return Response.json({ error: "Póliza no encontrada" }, { status: 404 });

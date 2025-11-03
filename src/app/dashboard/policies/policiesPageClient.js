@@ -198,6 +198,17 @@ export default function PoliciesPageClient({ user }) {
                       <div className="flex items-center gap-2">
                         <FileText className="h-5 w-5 text-primary" />
                         <CardTitle>{policy.name}</CardTitle>
+                        <CardDescription
+                          className={
+                            policy.status === "activa"
+                              ? "text-green-400 font-bold"
+                              : policy.status === "cancelada"
+                                ? "text-red-400 font-bold"
+                                : "text-orange-400 font-bold"
+                          }
+                        >
+                          {policy.status.toUpperCase()}
+                        </CardDescription>
                       </div>
                     </div>
                     <CardDescription>{policy.category}</CardDescription>
@@ -221,10 +232,10 @@ export default function PoliciesPageClient({ user }) {
                         variant=""
                         className="flex-1 hover:bg-orange-300 bg-orange-400 text-black"
                         onClick={() =>
-                          router.push(`/dashboard/policies/${policy.id}/edit`)
+                          router.push(`/dashboard/policies/${policy.id}`)
                         }
                       >
-                        Ver Pagos
+                        Ver Póliza
                       </Button>
                     </div>
                   </CardContent>

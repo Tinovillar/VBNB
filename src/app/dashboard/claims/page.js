@@ -125,7 +125,7 @@ export default function SiniestrosPageClient() {
                             : "text-red-600"
                       }`}
                     >
-                      {claim.status}
+                      {claim.status.toUpperCase()}
                     </td>
                     <td className="px-6 py-3 text-right flex justify-end gap-2">
                       <Button
