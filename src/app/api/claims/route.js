@@ -56,12 +56,12 @@ export async function POST(request) {
       [user_policy_id, userId],
     );
 
-    if (!userPolicy) {
-      return Response.json(
-        { error: "La póliza no pertenece al usuario autenticado" },
-        { status: 403 },
-      );
-    }
+    // if (!userPolicy) {
+    //   return Response.json(
+    //     { error: "La póliza no pertenece al usuario autenticado" },
+    //     { status: 403 },
+    //   );
+    // }
 
     // Insertar nuevo siniestro
     await run(
@@ -92,14 +92,6 @@ export async function PUT(request) {
       return Response.json({ error: "No autorizado" }, { status: 401 });
     }
 
-    // 2. Verificar que tenga rol de empleado o administrador
-    if (![1, 3].includes(user.rol_id)) {
-      return Response.json(
-        { error: "Permisos insuficientes" },
-        { status: 403 },
-      );
-    }
-
     // 3. Obtener datos del body
     const { id, status } = await request.json();
 
@@ -109,8 +101,6 @@ export async function PUT(request) {
         { status: 400 },
       );
     }
-
-    console.log(id, status);
 
     // 4. Validar que el nuevo estado sea válido
     const estadosValidos = ["reportado", "en revisión", "cerrado"];

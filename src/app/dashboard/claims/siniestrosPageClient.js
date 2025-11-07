@@ -36,7 +36,7 @@ export default function SiniestrosPageClient({ user }) {
       }
     };
     fetchClaims();
-  }, []);
+  }, [user]);
 
   const handleDelete = async (id) => {
     if (!confirm("¿Seguro que querés eliminar este siniestro?")) return;

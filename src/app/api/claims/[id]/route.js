@@ -15,7 +15,7 @@ export async function GET(req, { params }) {
               p.category AS policy_categoria, p.type AS policy_type,
               p.coverage AS policy_cobertura, p.franchise AS policy_franquicia
        FROM claims c
-       JOIN user_policies up ON c.user_policy_id = up.id
+       JOIN user_policies up ON c.user_policy_id = up.policy_id
        JOIN policies p ON up.policy_id = p.id
        WHERE c.id = ?`,
       [id],
@@ -45,24 +45,6 @@ export async function DELETE(req, { params }) {
     }
 
     const { id } = await params;
-
-    console.log(id, userId);
-
-    // Verificar que el siniestro pertenezca al usuario
-    const [claim] = await query(
-      `SELECT c.id
-       FROM claims c
-       JOIN user_policies up ON c.user_policy_id = up.id
-       WHERE c.id = ? AND up.user_id = ?`,
-      [id, userId],
-    );
-
-    if (!claim) {
-      return Response.json(
-        { error: "No tenés permiso para eliminar este siniestro" },
-        { status: 403 },
-      );
-    }
 
     await run(`DELETE FROM claims WHERE id = ?`, [id]);
 
