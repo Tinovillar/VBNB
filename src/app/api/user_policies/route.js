@@ -35,8 +35,8 @@ export async function POST(request) {
 
     // Insertar el vínculo entre el usuario y la póliza
     await run(
-      `INSERT INTO user_policies (user_id, policy_id, payment_frequency, status)
-       VALUES (?, ?, ?, 'pendiente')`,
+      `INSERT INTO user_policies (user_id, policy_id, payment_frequency)
+       VALUES (?, ?, ?)`,
       [userId, policy_id, payment_frequency],
     );
 

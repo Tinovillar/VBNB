@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS user_policies (
   user_id INTEGER NOT NULL,
   policy_id INTEGER NOT NULL,
   payment_frequency TEXT CHECK(payment_frequency IN ('mensual', 'trimestral', 'anual')),
-  status TEXT CHECK(status IN ('activa', 'vencida', 'cancelada')) DEFAULT 'pendiente',
+  status TEXT CHECK(status IN ('activa', 'vencida', 'cancelada', 'pendiente')) DEFAULT 'pendiente',
   fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (policy_id) REFERENCES policies(id) ON DELETE CASCADE
