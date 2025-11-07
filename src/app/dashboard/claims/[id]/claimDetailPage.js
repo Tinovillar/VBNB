@@ -158,23 +158,24 @@ export default function ClaimDetailPage({ user }) {
             >
               Volver
             </Button>
-            {user.rol_id !== 2 && claim.status === "reportado" ? (
-              <Button
-                variant="secondary"
-                onClick={() => handleUpdateClaim(claim.id, "en revisión")}
-              >
-                Mandar a revisión
-              </Button>
-            ) : claim.status === "cerrado" ? (
-              <></>
-            ) : (
-              <Button
-                variant="secondary"
-                onClick={() => handleUpdateClaim(claim.id, "cerrado")}
-              >
-                Cerrar Siniestro
-              </Button>
-            )}
+            {user.rol_id !== 2 &&
+              (claim.status === "reportado" ? (
+                <Button
+                  variant="secondary"
+                  onClick={() => handleUpdateClaim(claim.id, "en revisión")}
+                >
+                  Mandar a revisión
+                </Button>
+              ) : claim.status === "cerrado" ? (
+                <></>
+              ) : (
+                <Button
+                  variant="secondary"
+                  onClick={() => handleUpdateClaim(claim.id, "cerrado")}
+                >
+                  Cerrar Siniestro
+                </Button>
+              ))}
           </div>
         </div>
       </div>
