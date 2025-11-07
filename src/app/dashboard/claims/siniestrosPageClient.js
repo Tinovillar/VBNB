@@ -16,12 +16,11 @@ export default function SiniestrosPageClient({ user }) {
       try {
         let res;
         if (user.rol_id === 2) {
-          res = await fetch("/api/claims");
+          res = await fetch("/api/claims/user");
         } else {
           res = await fetch("/api/claims/all");
         }
         const data = await res.json();
-        console.log(data);
 
         if (res.ok && Array.isArray(data)) {
           setClaims(data);
