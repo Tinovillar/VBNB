@@ -98,6 +98,53 @@ CREATE TABLE IF NOT EXISTS claims (
   FOREIGN KEY (user_policy_id) REFERENCES user_policies(id) ON DELETE CASCADE
 );
 
+-- ========================
+-- HOME INSURANCES
+-- ========================
+CREATE TABLE IF NOT EXISTS home_insurances (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_policy_id INTEGER UNIQUE NOT NULL,
+  direccion_vivienda TEXT NOT NULL,
+  tipo_vivienda TEXT CHECK(tipo_vivienda IN ('Casa', 'Departamento', 'Dúplex', 'Otro')),
+  superficie_m2 REAL,
+  anio_construccion INTEGER,
+  valor_estimado REAL,
+  posee_alarma BOOLEAN,
+  FOREIGN KEY (user_policy_id) REFERENCES user_policies(id) ON DELETE CASCADE
+);
+
+-- ========================
+-- VEHICLE INSURANCES
+-- ========================
+CREATE TABLE IF NOT EXISTS vehicle_insurances (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_policy_id INTEGER UNIQUE NOT NULL,
+  marca TEXT NOT NULL,
+  modelo TEXT NOT NULL,
+  anio INTEGER NOT NULL,
+  patente TEXT UNIQUE NOT NULL,
+  numero_chasis TEXT,
+  numero_motor TEXT,
+  uso TEXT CHECK(uso IN ('Particular', 'Comercial')),
+  FOREIGN KEY (user_policy_id) REFERENCES user_policies(id) ON DELETE CASCADE
+);
+
+-- ========================
+-- LIFE INSURANCES
+-- ========================
+CREATE TABLE IF NOT EXISTS life_insurances (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_policy_id INTEGER UNIQUE NOT NULL,
+  nombre_asegurado TEXT NOT NULL,
+  apellido_asegurado TEXT NOT NULL,
+  fecha_nacimiento DATE NOT NULL,
+  ocupacion TEXT,
+  monto_asegurado REAL NOT NULL,
+  beneficiario TEXT,
+  relacion_beneficiario TEXT,
+  FOREIGN KEY (user_policy_id) REFERENCES user_policies(id) ON DELETE CASCADE
+);
+
 -- ==========================================================
 -- DATOS INICIALES
 -- ==========================================================
@@ -108,29 +155,7 @@ INSERT INTO users (
   calle_numero, ciudad, provincia, codigo_postal,
   email, password, rol_id
 ) VALUES
--- Ejemplo 1
-('Carla', 'Sielina', 'DNI', '40321456', '1998-04-12', '1123456789',
- 'Av. Corrientes 1543', 'Buenos Aires', 'Buenos Aires', '1043',
- 'admin@vbnb.com', 'admin123', 1),
-
--- Ejemplo 2
-('Marcos', 'Ferreyra', 'DNI', '37890231', '1995-11-23', '1136789054',
- 'San Martín 850', 'Rosario', 'Santa Fe', '2000',
- 'empleado1@vbnb.com', 'empleado123', 3),
-
--- Ejemplo 3
-('Lucía', 'Gómez', 'Pasaporte', 'XK239481', '2000-02-05', '1155543210',
- 'Belgrano 320', 'Córdoba', 'Córdoba', '5000',
- 'cliente1@vbnb.com', 'cliente123', 2);
-
--- Pólizas de ejemplo
-INSERT INTO policies (name, description, category, type, coverage, franchise, monthly_price, quarterly_price, annual_price)
-VALUES
-  ('Auto Básico', 'Cobertura contra terceros con asistencia 24hs.', 'Automóviles', 'Básica', 'Responsabilidad civil + asistencia básica', 10000, 15000, 42000, 160000),
-  ('Auto Premium', 'Cobertura total de vehículo y daños a terceros.', 'Automóviles', 'Premium', 'Cobertura total + rotura de cristales + robo', 5000, 30000, 84000, 300000),
-  ('Hogar Elite', 'Cobertura completa para vivienda e incendio.', 'Hogar', 'Elite', 'Daños por incendio, robo y responsabilidad civil', 20000, 25000, 70000, 260000);
-
--- Relación inicial (Carla tiene 1 póliza activa)
-INSERT INTO user_policies (user_id, policy_id, payment_frequency, status)
-VALUES
-  (2, 1, 'mensual', 'activa');
+-- Admin
+('Admin', 'Admin', 'DNI', '11111111', '1111-11-11', '1111111111',
+ 'Admin Street 1111', 'Admin City', 'Admin Province', '1111',
+ 'admin@vbnb.com', 'aps123', 1);
