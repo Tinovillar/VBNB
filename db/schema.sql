@@ -13,13 +13,6 @@ CREATE TABLE IF NOT EXISTS roles (
   descripcion TEXT
 );
 
--- Datos iniciales de roles
-INSERT INTO roles (nombre, descripcion)
-VALUES
-  ('Admin', 'Acceso completo al sistema'),
-  ('Cliente', 'Usuario con pólizas contratadas'),
-  ('Empleado', 'Usuario interno que gestiona pólizas y clientes');
-
 -- ========================
 -- USERS
 -- ========================
@@ -67,7 +60,7 @@ CREATE TABLE IF NOT EXISTS user_policies (
   user_id INTEGER NOT NULL,
   policy_id INTEGER NOT NULL,
   payment_frequency TEXT CHECK(payment_frequency IN ('mensual', 'trimestral', 'anual')),
-  status TEXT CHECK(status IN ('activa', 'vencida', 'cancelada')) DEFAULT 'activa',
+  status TEXT CHECK(status IN ('activa', 'vencida', 'cancelada')) DEFAULT 'pendiente',
   fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (policy_id) REFERENCES policies(id) ON DELETE CASCADE
@@ -149,13 +142,14 @@ CREATE TABLE IF NOT EXISTS life_insurances (
 -- DATOS INICIALES
 -- ==========================================================
 
--- Usuarios de ejemplo (asociados por rol_id)
-INSERT INTO users (
-  nombre, apellido, tipo_documento, numero_documento, fecha_nacimiento, telefono,
-  calle_numero, ciudad, provincia, codigo_postal,
-  email, password, rol_id
-) VALUES
--- Admin
-('Admin', 'Admin', 'DNI', '11111111', '1111-11-11', '1111111111',
- 'Admin Street 1111', 'Admin City', 'Admin Province', '1111',
- 'admin@vbnb.com', 'aps123', 1);
+INSERT INTO roles VALUES(1,'Admin','Acceso completo al sistema');
+INSERT INTO roles VALUES(2,'Cliente','Usuario con pólizas contratadas');
+INSERT INTO roles VALUES(3,'Empleado','Usuario interno que gestiona pólizas y clientes');
+
+INSERT INTO users VALUES(1,'Admin','Admin','DNI','11111111','1111-11-11','1111111111','Admin Street 1111','Admin City','Admin Province','1111','admin@vbnb.com','aps123',1,'2025-11-07 20:51:15');
+INSERT INTO users VALUES(2,'Empleado','Numero 1','DNI','44242424','2002-02-06','291291291','Calle empleado 1','Empleado1','Empleado1','1111','e1@vbnb.com','aps123',3,'2025-11-07 22:54:00');
+INSERT INTO users VALUES(3,'Cliente','Numero 1','DNI','111111','2002-02-06','291291291','Cliente 1','Cliente1','Cliente1','1111','c1@vbnb.com','aps123',2,'2025-11-07 22:55:58');
+
+INSERT INTO policies VALUES(1,'Seguro Auto','Cobertura contra terceros con asistencia 24hs.','Vehiculos','Básica','Responsabilidad civil + asistencia básica',10000.0,15000.0,NULL,160000.0,'2025-11-07 22:22:16');
+INSERT INTO policies VALUES(2,'Seguro Casa','Cobertura completa para vivienda e incendio.','Inmuebles','Premium','Daños por incendio, robo y responsabilidad civil',20000.0,25000.0,NULL,260000.0,'2025-11-07 22:33:31');
+INSERT INTO policies VALUES(3,'Seguro Vida','Seguro de vida + Seguro médico general','Vida','Elite','Generalista',120000.0,20000.0,NULL,200000.0,'2025-11-07 22:50:26');
