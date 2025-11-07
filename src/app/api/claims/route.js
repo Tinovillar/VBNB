@@ -56,13 +56,6 @@ export async function POST(request) {
       [user_policy_id, userId],
     );
 
-    // if (!userPolicy) {
-    //   return Response.json(
-    //     { error: "La póliza no pertenece al usuario autenticado" },
-    //     { status: 403 },
-    //   );
-    // }
-
     // Insertar nuevo siniestro
     await run(
       `INSERT INTO claims (user_policy_id, description, status)
