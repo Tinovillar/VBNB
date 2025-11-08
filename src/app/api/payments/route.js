@@ -14,23 +14,23 @@ export async function GET() {
     // Si el usuario es cliente, solo ve sus propios pagos
     const isCliente = user.rol_id === 2;
 
-    const sql = `
-      SELECT
-        payments.id,
-        users.nombre AS user_nombre,
-        users.apellido AS user_apellido,
-        policies.name AS policy_nombre,
-        user_policies.payment_frequency AS modalidad,
-        payments.method,
-        payments.amount,
-        payments.payment_date
-      FROM payments
-      JOIN user_policies ON payments.user_policy_id = user_policies.id
-      JOIN users ON user_policies.user_id = users.id
-      JOIN policies ON user_policies.policy_id = policies.id
-      ${isCliente ? "WHERE users.id = ?" : ""}
-      ORDER BY payments.payment_date DESC
-    `;
+    const sql = `SELECT
+          p.id,
+          u.nombre,
+          u.apellido,
+          p.payment_date,
+          p.payment_frequency,
+          p.method,
+          p.status,
+          p.amount,
+          po.name
+        FROM payments p
+        JOIN user_policies up ON up.id = p.user_policy_id
+        JOIN users u ON u.id = up.user_id
+        JOIN policies po ON up.policy_id = po.id
+        ${isCliente ? "WHERE u.id = ?" : ""}
+        ORDER BY p.payment_date DESC
+      `;
 
     const params = isCliente ? [user.id] : [];
     const pagos = await query(sql, params);
@@ -83,9 +83,9 @@ export async function POST(request) {
 
     // Guardar pago en la base de datos
     const insertResult = await run(
-      `INSERT INTO payments (user_policy_id, amount, method, status)
-       VALUES (?, ?, ?, 'pagado')`,
-      [up_id, monto, metodo_pago],
+      `INSERT INTO payments (user_policy_id, amount, method, status, payment_frequency)
+       VALUES (?, ?, ?, 'pagado',?)`,
+      [up_id, monto, metodo_pago, modalidad],
     );
 
     const pagoId = insertResult.lastID;

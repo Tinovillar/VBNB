@@ -13,6 +13,7 @@ export default function PaymentsPage() {
     try {
       const res = await fetch("/api/payments");
       const data = await res.json();
+      console.log(data);
 
       if (res.ok && Array.isArray(data)) {
         setPayments(data);
@@ -112,8 +113,8 @@ export default function PaymentsPage() {
                   <th className="px-6 py-3 text-left font-semibold text-gray-700">
                     Fecha
                   </th>
-                  <th className="px-6 py-3 text-right font-semibold text-gray-700">
-                    Acciones
+                  <th className="px-6 py-3 text-left font-semibold text-gray-700">
+                    Status
                   </th>
                 </tr>
               </thead>
@@ -123,16 +124,14 @@ export default function PaymentsPage() {
                   <tr key={pago.id} className="hover:bg-gray-50">
                     <td className="px-6 py-3 text-gray-700">{pago.id}</td>
                     <td className="px-6 py-3 text-gray-700">
-                      {pago.user_nombre} {pago.user_apellido}
+                      {pago.nombre} {pago.apellido}
                     </td>
-                    <td className="px-6 py-3 text-gray-700">
-                      {pago.policy_nombre}
-                    </td>
+                    <td className="px-6 py-3 text-gray-700">{pago.name}</td>
                     <td className="px-6 py-3 text-gray-700">
                       ${pago.amount || "-"}
                     </td>
                     <td className="px-6 py-3 text-gray-700 capitalize">
-                      {pago.modalidad}
+                      {pago.payment_frequency}
                     </td>
                     <td className="px-6 py-3 text-gray-700 capitalize">
                       {pago.method}
@@ -140,15 +139,8 @@ export default function PaymentsPage() {
                     <td className="px-6 py-3 text-gray-600">
                       {pago.payment_date}
                     </td>
-                    <td className="px-6 py-3 text-right">
-                      <Button
-                        variant="ghost"
-                        className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
-                        onClick={() => handleDownload(pago.id)}
-                      >
-                        <FileDown className="h-4 w-4" />
-                        Descargar PDF
-                      </Button>
+                    <td className="px-6 py-3 text-gray-600">
+                      {pago.status.toUpperCase()}
                     </td>
                   </tr>
                 ))}

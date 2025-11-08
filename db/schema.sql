@@ -75,6 +75,7 @@ CREATE TABLE IF NOT EXISTS payments (
   amount REAL NOT NULL,
   payment_date DATETIME DEFAULT CURRENT_TIMESTAMP,
   method TEXT,
+  payment_frequency TEXT CHECK(payment_frequency IN ('mensual', 'trimestral', 'anual')),
   status TEXT CHECK(status IN ('pendiente', 'pagado', 'fallido')) DEFAULT 'pendiente',
   FOREIGN KEY (user_policy_id) REFERENCES user_policies(id) ON DELETE CASCADE
 );
@@ -153,3 +154,7 @@ INSERT INTO users VALUES(3,'Cliente','Numero 1','DNI','111111','2002-02-06','291
 INSERT INTO policies VALUES(1,'Seguro Auto','Cobertura contra terceros con asistencia 24hs.','Vehiculos','Básica','Responsabilidad civil + asistencia básica',10000.0,15000.0,NULL,160000.0,'2025-11-07 22:22:16');
 INSERT INTO policies VALUES(2,'Seguro Casa','Cobertura completa para vivienda e incendio.','Inmuebles','Premium','Daños por incendio, robo y responsabilidad civil',20000.0,25000.0,NULL,260000.0,'2025-11-07 22:33:31');
 INSERT INTO policies VALUES(3,'Seguro Vida','Seguro de vida + Seguro médico general','Vida','Elite','Generalista',120000.0,20000.0,NULL,200000.0,'2025-11-07 22:50:26');
+
+INSERT INTO user_policies VALUES(2,3,2,'mensual','activa','2025-11-08 00:09:30');
+
+INSERT INTO claims VALUES(3,2,'Me cagaron a patadas la puerta','reportado','2025-11-07 23:38:55');
