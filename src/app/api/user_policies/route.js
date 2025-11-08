@@ -87,6 +87,31 @@ export async function PUT(request, { params }) {
       );
     }
 
+    const currentStatus = await get(
+      "select status from user_policies WHERE id=?",
+      id,
+    );
+    console.log(currentStatus);
+
+    if (currentStatus.status === "pendiente") {
+      let hasVehicle = await get(
+        "select * from user_policies up JOIN vehicle_insurances v ON v.user_policy_id=up.id WHERE up.id=?",
+        id,
+      );
+      let hasPerson = await get(
+        "select * from user_policies up JOIN life_insurances v ON v.user_policy_id=up.id WHERE up.id=?",
+        id,
+      );
+      let hasHome = await get(
+        "select * from user_policies up JOIN home_insurances v ON v.user_policy_id=up.id WHERE up.id=?",
+        id,
+      );
+      if (!hasHome && !hasPerson && !hasVehicle)
+        return Response.json(
+          { error: "No tiene ninguna entidad asegurada, no se puede activar" },
+          { status: 404 },
+        );
+    }
     // Actualizar estado
     await run("UPDATE user_policies SET status = ? WHERE id = ?", [status, id]);
 

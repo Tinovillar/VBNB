@@ -103,7 +103,7 @@ export default function PolicyDetailPage({ user }) {
             >
               Volver
             </Button>
-            {policy.status === "activa" && (
+            {user.rol_id === 2 && policy.status === "activa" && (
               <Button
                 onClick={() =>
                   router.push("/dashboard/payments/new?up_id=" + policy.up_id)
@@ -113,14 +113,14 @@ export default function PolicyDetailPage({ user }) {
                 Generar pago
               </Button>
             )}
-            {user.rol_id === 2 && policy.status === "pendiente" && (
+            {policy.status === "pendiente" && (
               <Button
                 onClick={() =>
                   router.push(`/dashboard/policies/${policy.up_id}/purchase`)
                 }
                 className="bg-black text-white hover:bg-gray-100"
               >
-                Asegurar
+                Editar Asegurado
               </Button>
             )}
           </div>
