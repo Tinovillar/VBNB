@@ -1,9 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export function HomeInsuranceForm({ userPolicyId, handleContratarPoliza }) {
+  const router = useRouter();
+  const [insurance, setInsurance] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const [form, setForm] = useState({
     user_policy_id: userPolicyId || "",
     direccion_vivienda: "",
@@ -25,19 +30,54 @@ export function HomeInsuranceForm({ userPolicyId, handleContratarPoliza }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("/api/home_insurances", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+      let res;
+      if (insurance === null) {
+        res = await fetch("/api/home_insurances", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        });
+      } else {
+        res = await fetch("/api/home_insurances", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        });
+      }
       const data = await res.json();
       if (!res.ok)
         throw new Error(data.error || "Error al registrar seguro de hogar");
       alert("Seguro de hogar registrado correctamente");
+      router.push("/dashboard/policies");
     } catch (err) {
       alert(err.message);
     }
   };
+
+  useEffect(() => {
+    const loadInsurance = async () => {
+      try {
+        const res = await fetch(
+          `/api/home_insurances?user_policy_id=${userPolicyId}`,
+        );
+        const data = await res.json();
+
+        console.log(data.home_insurance);
+
+        if (data.exists) {
+          setInsurance(data.home_insurance);
+          setForm(data.home_insurance);
+        }
+      } catch (err) {
+        console.error("Error cargando póliza:", err);
+        alert("Error de conexión con el servidor");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadInsurance();
+  }, [userPolicyId]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -104,6 +144,10 @@ export function HomeInsuranceForm({ userPolicyId, handleContratarPoliza }) {
 }
 
 export function VehicleInsuranceForm({ userPolicyId }) {
+  const router = useRouter();
+  const [insurance, setInsurance] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const [form, setForm] = useState({
     user_policy_id: userPolicyId || "",
     marca: "",
@@ -121,19 +165,52 @@ export function VehicleInsuranceForm({ userPolicyId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("/api/vehicle_insurances", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+      let res;
+      if (insurance === null) {
+        res = await fetch("/api/vehicle_insurances", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        });
+      } else {
+        res = await fetch("/api/vehicle_insurances", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        });
+      }
       const data = await res.json();
       if (!res.ok)
         throw new Error(data.error || "Error al registrar seguro de vehículo");
       alert("Seguro de vehículo registrado correctamente");
+      router.push("/dashboard/policies");
     } catch (err) {
       alert(err.message);
     }
   };
+
+  useEffect(() => {
+    const loadInsurance = async () => {
+      try {
+        const res = await fetch(
+          `/api/vehicle_insurances?user_policy_id=${userPolicyId}`,
+        );
+        const data = await res.json();
+
+        if (data.exists) {
+          setInsurance(data.vehicle_insurance);
+          setForm(data.vehicle_insurance);
+        }
+      } catch (err) {
+        console.error("Error cargando póliza:", err);
+        alert("Error de conexión con el servidor");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadInsurance();
+  }, [userPolicyId]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -204,6 +281,10 @@ export function VehicleInsuranceForm({ userPolicyId }) {
 }
 
 export function LifeInsuranceForm({ userPolicyId }) {
+  const router = useRouter();
+  const [insurance, setInsurance] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const [form, setForm] = useState({
     user_policy_id: userPolicyId || "",
     nombre_asegurado: "",
@@ -221,19 +302,52 @@ export function LifeInsuranceForm({ userPolicyId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("/api/life_insurances", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+      let res;
+      if (insurance === null) {
+        res = await fetch("/api/life_insurances", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        });
+      } else {
+        res = await fetch("/api/life_insurances", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        });
+      }
       const data = await res.json();
       if (!res.ok)
         throw new Error(data.error || "Error al registrar seguro de vida");
       alert("Seguro de vida registrado correctamente");
+      router.push("/dashboard/policies");
     } catch (err) {
       alert(err.message);
     }
   };
+
+  useEffect(() => {
+    const loadInsurance = async () => {
+      try {
+        const res = await fetch(
+          `/api/life_insurances?user_policy_id=${userPolicyId}`,
+        );
+        const data = await res.json();
+
+        if (data.exists) {
+          setInsurance(data.life_insurance);
+          setForm(data.life_insurance);
+        }
+      } catch (err) {
+        console.error("Error cargando póliza:", err);
+        alert("Error de conexión con el servidor");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadInsurance();
+  }, [userPolicyId]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
