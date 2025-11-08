@@ -283,7 +283,7 @@ export default function PoliciesPageClient({ user }) {
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {myPolicies.map((policy, i) => (
-                <Card key={policy.up_id}>
+                <Card key={policy.up_id * policy.id * i}>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">

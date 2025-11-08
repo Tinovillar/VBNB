@@ -8,7 +8,7 @@ export async function GET() {
     return Response.json({ error: "No autorizado" }, { status: 401 });
   }
   let policies = await query(
-    "select * from user_policies LEFT JOIN policies WHERE user_policies.user_id=? AND user_policies.policy_id=policies.id",
+    "select up.id AS up_id, * from user_policies AS up LEFT JOIN policies WHERE up.user_id=? AND up.policy_id=policies.id",
     [userId],
   );
   return Response.json(policies);
