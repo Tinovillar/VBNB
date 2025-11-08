@@ -3,7 +3,7 @@ import { getSession } from "@/lib/session";
 
 export async function GET() {
   const userId = await getSession();
-  const { up_id } = getParams();
+  // const { up_id } = getParams();
   if (!userId) {
     return Response.json({ error: "No autorizado" }, { status: 401 });
   }

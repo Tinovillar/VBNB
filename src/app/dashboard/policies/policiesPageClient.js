@@ -77,8 +77,11 @@ export default function PoliciesPageClient({ user }) {
   useEffect(() => {
     const fetchPolicies = async () => {
       try {
-        const res = await fetch("/api/user_policies");
-        const data = await res.json();
+        let res, data;
+
+        res = await fetch("/api/user_policies/user");
+
+        data = await res.json();
 
         if (res.ok && Array.isArray(data)) {
           console.log(data);
@@ -94,7 +97,7 @@ export default function PoliciesPageClient({ user }) {
       }
     };
     fetchPolicies();
-  }, []);
+  }, [user]);
 
   const handleUpdatePoliza = async (userPolicyId, status) => {
     if (!confirm("¿Deseás activar esta póliza?")) return;
@@ -419,9 +422,7 @@ export default function PoliciesPageClient({ user }) {
                             variant="ghost"
                             className="flex items-center gap-1 text-blue-600 hover:text-blue-800"
                             onClick={() =>
-                              router.push(
-                                `/dashboard/policies/${row.policy_id}`,
-                              )
+                              router.push(`/dashboard/policies/${row.up_id}`)
                             }
                           >
                             <Eye className="h-4 w-4" />
