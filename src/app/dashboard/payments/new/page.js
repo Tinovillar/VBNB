@@ -16,7 +16,6 @@ export default function NewPaymentPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const presetPolicyId = searchParams.get("up_id");
-  console.log(presetPolicyId);
 
   // Traer pólizas contratadas del usuario
   useEffect(() => {
@@ -54,8 +53,6 @@ export default function NewPaymentPage() {
 
   const handleGeneratePayment = async (e) => {
     e.preventDefault();
-
-    console.log(form);
 
     if (!form.up_id) {
       alert("Debe seleccionar una póliza");

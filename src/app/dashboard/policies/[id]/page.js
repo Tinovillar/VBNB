@@ -24,7 +24,6 @@ export default function PolicyDetailPage() {
           return;
         }
         setPolicy(data[0]);
-        console.log(data);
       } catch (err) {
         console.error("Error cargando póliza:", err);
         alert("Error de conexión con el servidor");

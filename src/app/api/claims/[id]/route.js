@@ -4,7 +4,6 @@ import { getSession } from "@/lib/session";
 export async function GET(req, { params }) {
   try {
     const userId = await getSession();
-    console.log(await params);
 
     const { id } = await params;
 

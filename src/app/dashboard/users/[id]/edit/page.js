@@ -133,6 +133,7 @@ export default function EditUserPage() {
             onChange={handleChange}
             onSubmit={handleSubmit}
             isEdit={true}
+            showRole={false}
           />
 
           {/* Botones de navegación adicionales */}

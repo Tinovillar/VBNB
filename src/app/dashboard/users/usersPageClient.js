@@ -93,6 +93,9 @@ export default function UsersPageClient({ user }) {
                   <th className="px-6 py-3 text-left font-semibold text-gray-700">
                     Rol
                   </th>
+                  <th className="px-6 py-3 text-left font-semibold text-gray-700">
+                    Fecha de Registro
+                  </th>
                   <th className="px-6 py-3 text-right font-semibold text-gray-700">
                     Acciones
                   </th>
@@ -109,6 +112,9 @@ export default function UsersPageClient({ user }) {
                     <td className="px-6 py-3 text-gray-600">{user.email}</td>
                     <td className="px-6 py-3 text-gray-600">
                       {user.rol_nombre || "Cliente"}
+                    </td>
+                    <td className="px-6 py-3 text-gray-600">
+                      {user.fecha_registro}
                     </td>
                     <td className="px-6 py-3 text-right flex justify-end gap-2">
                       <Button

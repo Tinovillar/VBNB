@@ -84,7 +84,6 @@ export default function PoliciesPageClient({ user }) {
         data = await res.json();
 
         if (res.ok && Array.isArray(data)) {
-          console.log(data);
           setMyPolicies(data);
         } else {
           console.error("Error en formato de respuesta", data);

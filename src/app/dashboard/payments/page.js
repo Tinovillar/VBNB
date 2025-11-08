@@ -13,7 +13,6 @@ export default function PaymentsPage() {
     try {
       const res = await fetch("/api/payments");
       const data = await res.json();
-      console.log(data);
 
       if (res.ok && Array.isArray(data)) {
         setPayments(data);
