@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS policies (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   description TEXT,
-  category TEXT,
+  category TEXT CHECK(category IN ('Hogar', 'Vida', 'Vehiculo')),
   type TEXT CHECK(type IN ('Básica', 'Premium', 'Elite')),
   coverage TEXT,
   franchise REAL,
@@ -151,8 +151,8 @@ INSERT INTO users VALUES(1,'Admin','Admin','DNI','11111111','1111-11-11','111111
 INSERT INTO users VALUES(2,'Empleado','Numero 1','DNI','44242424','2002-02-06','291291291','Calle empleado 1','Empleado1','Empleado1','1111','e1@vbnb.com','aps123',3,'2025-11-07 22:54:00');
 INSERT INTO users VALUES(3,'Cliente','Numero 1','DNI','111111','2002-02-06','291291291','Cliente 1','Cliente1','Cliente1','1111','c1@vbnb.com','aps123',2,'2025-11-07 22:55:58');
 
-INSERT INTO policies VALUES(1,'Seguro Auto','Cobertura contra terceros con asistencia 24hs.','Vehiculos','Básica','Responsabilidad civil + asistencia básica',10000.0,15000.0,NULL,160000.0,'2025-11-07 22:22:16');
-INSERT INTO policies VALUES(2,'Seguro Casa','Cobertura completa para vivienda e incendio.','Inmuebles','Premium','Daños por incendio, robo y responsabilidad civil',20000.0,25000.0,NULL,260000.0,'2025-11-07 22:33:31');
+INSERT INTO policies VALUES(1,'Seguro Auto','Cobertura contra terceros con asistencia 24hs.','Vehiculo','Básica','Responsabilidad civil + asistencia básica',10000.0,15000.0,NULL,160000.0,'2025-11-07 22:22:16');
+INSERT INTO policies VALUES(2,'Seguro Casa','Cobertura completa para vivienda e incendio.','Hogar','Premium','Daños por incendio, robo y responsabilidad civil',20000.0,25000.0,NULL,260000.0,'2025-11-07 22:33:31');
 INSERT INTO policies VALUES(3,'Seguro Vida','Seguro de vida + Seguro médico general','Vida','Elite','Generalista',120000.0,20000.0,NULL,200000.0,'2025-11-07 22:50:26');
 
 INSERT INTO user_policies VALUES(2,3,2,'mensual','activa','2025-11-08 00:09:30');
