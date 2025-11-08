@@ -17,7 +17,7 @@ export default function NewClaimPage() {
   useEffect(() => {
     const loadUserPolicies = async () => {
       try {
-        const res = await fetch("/api/user_policies");
+        const res = await fetch("/api/user_policies/user");
         const data = await res.json();
 
         if (res.ok && Array.isArray(data)) {
