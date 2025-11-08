@@ -21,7 +21,8 @@ export default function NewClaimPage() {
         const data = await res.json();
 
         if (res.ok && Array.isArray(data)) {
-          setPolicies(data);
+          let filtered = data.filter((d) => d.status === "activa");
+          setPolicies(filtered);
         } else {
           console.error("Error al obtener pólizas:", data);
         }

@@ -34,14 +34,14 @@ export async function POST(request) {
     }
 
     // Insertar el vínculo entre el usuario y la póliza
-    await run(
+    const runReturn = await run(
       `INSERT INTO user_policies (user_id, policy_id, payment_frequency)
        VALUES (?, ?, ?)`,
       [userId, policy_id, payment_frequency],
     );
 
     return Response.json(
-      { message: "Póliza contratada correctamente" },
+      { id: runReturn.lastID, message: "Póliza contratada correctamente" },
       { status: 201 },
     );
   } catch (err) {

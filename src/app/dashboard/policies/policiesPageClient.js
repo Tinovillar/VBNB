@@ -249,6 +249,11 @@ export default function PoliciesPageClient({ user }) {
                         variant=""
                         className="flex-1 hover:bg-green-200 bg-green-300 text-black"
                         onClick={() => handleContratarPoliza(policy.id)}
+                        // onClick={() =>
+                        //   router.push(
+                        //     `/dashboard/policies/${policy.id}/purchase`,
+                        //   )
+                        // }
                       >
                         Contratar
                       </Button>
